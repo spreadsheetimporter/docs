@@ -1,0 +1,28 @@
+name: ci
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: mkdocs build --strict
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - run: pip install -r requirements.txt
+      - run: mkdocs build --strict
+
+  # ---------------------------------------------------------------------------
+  # Deploy is intentionally NOT wired yet. The combined site will be published
+  # once the domain decision (vs. the existing docs.spreadsheet-importer.com,
+  # which serves the UI5 docs) and the UI5-docs incorporation are settled.
+  # To deploy to GitHub Pages later, add a job that runs `mkdocs gh-deploy`.
+  # ---------------------------------------------------------------------------

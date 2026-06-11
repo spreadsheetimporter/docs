@@ -1,0 +1,64 @@
+site_name: Spreadsheet Importer — Documentation
+site_url: https://spreadsheetimporter.github.io/docs/
+site_description: >-
+  Documentation for the Spreadsheet Importer family — the UI5 frontend component
+  and the server-side ABAP RAP backend importer.
+repo_name: spreadsheetimporter/docs
+repo_url: https://github.com/spreadsheetimporter/docs
+edit_uri: edit/main/docs/
+docs_dir: docs
+site_dir: site
+
+nav:
+  - Home: index.md
+  - UI5 Component (Frontend):
+      - Overview: ui5/index.md
+  - ABAP Importer (Backend):
+      - Overview: abap/index.md
+      - Integration Guide: abap/integration-guide.md
+      - Public API Contract: abap/public-api-contract.md
+      - Usage Cookbook: abap/usage-cookbook.md
+
+theme:
+  name: material
+  palette:
+    - media: '(prefers-color-scheme: dark)'
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    - media: '(prefers-color-scheme: light)'
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+  features:
+    - navigation.sections
+    - navigation.top
+    - navigation.tracking
+    - content.code.copy
+    - content.tabs.link
+    - toc.follow
+    - search.suggest
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - footnotes
+  - toc:
+      permalink: true
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
