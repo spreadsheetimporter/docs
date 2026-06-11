@@ -29,11 +29,16 @@ nav:
       - TypeScript: ui5/pages/Typescript.md
       - Central Deployment: ui5/pages/CentralDeployment.md
       - Supported Versions: ui5/pages/SupportVersions.md
-      - ABAP (Backend Importer):
-          - Overview: abap/index.md
-          - Integration Guide: abap/integration-guide.md
-          - Public API Contract: abap/public-api-contract.md
-          - Usage Cookbook: abap/usage-cookbook.md
+  - ABAP (Backend Importer):
+      - Overview: abap/index.md
+      - Integration Guide: abap/integration-guide.md
+      - Fiori Elements & File Upload: abap/fiori-elements.md
+      - Options & Data Types: abap/options.md
+      - Extension Hooks: abap/extension-hooks.md
+      - Template Download: abap/template-download.md
+      - Troubleshooting & Limits: abap/troubleshooting.md
+      - Public API Contract: abap/public-api-contract.md
+      - Usage Cookbook: abap/usage-cookbook.md
   - Reference:
       - API Reference: ui5/pages/APIReference.md
       - Changelogs: ui5/pages/CHANGELOGSPREADSHEETIMPORTER.md

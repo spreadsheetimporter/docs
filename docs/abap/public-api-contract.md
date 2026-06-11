@@ -1,7 +1,8 @@
 # Public API Contract & Stability
 
-> **⚠️ Pre-1.0 (`0.x`) — read this first.** This component has **not cut a stable release yet** (see the
-> CHANGELOG). Per [SemVer §4](https://semver.org/#spec-item-4), **anything in this
+> **⚠️ Early version — experimental (`0.x`). Read this first.** This component is at an **early,
+> experimental stage** and has **not cut a stable release yet** (see the CHANGELOG). Per
+> [SemVer §4](https://semver.org/#spec-item-4), **anything in this
 > document may change in any `0.x` release** — signatures, types, even what counts as public. The
 > classification below is the contract we *intend* to freeze at `1.0`; until then it is "what we plan to
 > keep stable," not a guarantee. **As a consumer today:** still follow the public-vs-internal split (bind

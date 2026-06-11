@@ -1,0 +1,124 @@
+# Fiori Elements & file upload
+
+Let a user (Fiori) or a system (API) send a spreadsheet **file** to your RAP BO and have its rows
+imported — with about two lines of your own code. The action runs parse → coerce → dynamic EML create
+with `defer_commit` (the RAP framework commits at the end of the OData request, so it's one synchronous
+call).
+
+## What the component ships
+
+| Object | Role |
+|---|---|
+| `ZSSI_A_IMPORT` | Flat action parameter (base64 `FileContent` + format options) — the **API** channel. |
+| `ZSSI_A_IMPORT_FILE` | Deep action parameter (Fiori `largeObject` upload via `_File`) — the **Fiori** channel. |
+| `ZSSI_A_FILE` | The uploaded file (`Edm.Stream` + mime + filename). |
+| `ZSSI_A_RESULT` | `Requested` / `Created` / `Failed` / `Messages`. |
+| `ZCL_SSI_IMPORT_ACTION=>execute( )` | The one‑line handler delegate (generic — any BO's keys/result fit). |
+| `ZCL_SSI_ADAPTER_GEN=>generate_action( )` | Emits the handler + the BDEF action lines for you. |
+
+## Wire it into your BO (3 steps)
+
+1. **Two action lines** in your BO's behavior definition (the root entity's behavior):
+
+    ```abap
+    static action importExcel  parameter ZSSI_A_IMPORT            result [1] ZSSI_A_RESULT;
+    static action importUpload deep parameter ZSSI_A_IMPORT_FILE  result [1] ZSSI_A_RESULT;
+    ```
+    Keep only `importExcel` for API‑only, or only `importUpload` for Fiori‑only.
+
+2. **One handler method per action** in your behavior pool — generate it with
+   `zcl_ssi_adapter_gen=>generate_action( iv_entity = 'ZXX_R_BO' iv_alias = 'YourAlias' )`, or write it
+   by hand (each body is a single call):
+
+    ```abap
+    METHOD import_excel.   " FOR ACTION YourAlias~importExcel
+      zcl_ssi_import_action=>execute( EXPORTING it_keys   = keys
+                                                iv_entity = 'ZXX_R_BO'
+                                      CHANGING  ct_result = result ).
+    ENDMETHOD.
+    ```
+    (Pass an optional `is_options` to inject [extension hooks](extension-hooks.md) or a mapping.)
+
+3. **Expose** your BO via an OData V4 UI service (SRVD + SRVB). `importExcel` / `importUpload` surface
+   as bound actions.
+
+## Calling it
+
+=== "API (any client)"
+
+    ```http
+    POST .../YourEntity/<namespace>.importExcel
+    { "FileContent":"<base64 of the xlsx/csv>", "IsCsv":true, "IsDraft":false,
+      "ChunkSize":0, "DecimalSeparator":"", "HeaderRow":0 }
+    ```
+    → `{ "Requested":n, "Created":n, "Failed":n, "Messages":"..." }`
+
+=== "Fiori Elements"
+
+    `importUpload` renders a **file‑upload control in the action‑parameter dialog** (the `_File`
+    largeObject); the user picks the file and the rows import. The action is surfaced on the list
+    report / object page through a **metadata extension** (see below).
+
+**Option fields** (on both parameters): `IsCsv` force CSV (else magic‑byte auto‑detect) · `IsDraft`
+create drafts · `ChunkSize` rows/LUW (0 = default 500) · `DecimalSeparator` `'.'`/`','` · `HeaderRow`
+1‑based header row. See [Options & data types](options.md).
+
+## Surfacing the action in Fiori Elements (metadata extension)
+
+In a Fiori Elements app the import action becomes a **button in the table toolbar** (and the upload
+parameter renders a file picker) via a CDS **metadata extension** (DDLX) on your projection view — no
+custom UI code. Conceptually:
+
+```abap
+@Metadata.layer: #CORE
+annotate entity ZC_YourProjection with
+{
+  @UI.lineItem: [ { position: 10 } ]                       // a column …
+  YourField;
+}
+
+// the action on the entity's toolbar:
+@UI: { lineItem:        [ { type: #FOR_ACTION, dataAction: 'importUpload', label: 'Import Excel' } ],
+       identification:  [ { type: #FOR_ACTION, dataAction: 'importUpload', label: 'Import Excel' } ] }
+```
+
+!!! info "A complete, runnable example is in the samples"
+    The [samples repo](https://github.com/spreadsheetimporter/abap-spreadsheetimporter-samples) wires the
+    demo BO end‑to‑end for Fiori Elements — projection view, behaviour projection, service definition,
+    OData V4 UI service binding, and the metadata extension that puts the import button on the list
+    report — so you can build a Fiori Elements app on top and upload Excel files. The exact objects +
+    DDLX are shown here once published.
+
+## The 758 on‑prem Fiori upload caveat
+
+On **S/4HANA 2023 on‑prem**, the base64 **API channel is the universal, fully‑wired path**. The Fiori
+`importUpload` control still renders a working `Edm.Stream` upload, but the mime‑type filter and file
+name are not auto‑bound in the dialog — a confirmed **gateway framework‑version gap, not a modelling
+bug**. The importer auto‑detects the file type from magic bytes regardless, so the import works either
+way.
+
+??? note "Why (the gateway detail)"
+    `ZSSI_A_FILE` is modelled *verbatim* per SAP's documented "File Upload as an Action Parameter" recipe
+    (`@Semantics.largeObject.mimeType/.fileName/.contentDispositionPreference:#INLINE` on `abap.rawstring`,
+    `@UI.hidden` on mime/filename). The live `$metadata` on 758 **does** render `FileContent` as
+    `Edm.Stream`, **but** the RAP→OData V4 gateway does **not** translate `@Semantics.largeObject` into the
+    `Core.MediaType` / `Core.ContentDisposition` / `Core.IsMediaType` / `Core.AcceptableMediaTypes` terms
+    that Fiori Elements needs to wire the mime filter and file name. The 758 `$metadata` carries **zero** of
+    those `Core.*` terms on the action‑parameter ComplexType.
+
+    This translation is done by the gateway metadata generator on SAP BTP ABAP / S/4HANA Cloud (and newer
+    on‑prem gateway SPs); it is not expressible via DDLX, a raw `@Core.*` passthrough, or a SRVD
+    annotation — the only on‑prem path is a gateway SP/note upgrade. Because the modelling already matches
+    SAP's recipe byte‑for‑byte, the dialog **auto‑wires on Cloud / a newer on‑prem gateway with zero change**
+    to this component.
+
+??? note "C1 API release (only for cross‑software‑component consumption on Cloud)"
+    The "use of non‑released API" ATC finding only fires when a *restricted* (ABAP for Cloud Development)
+    consumer references these objects **from a different software component**. Within the same software
+    component, access is always allowed without release — so for the common model (pull the repo into a
+    package in your own software component) **no C1 release is needed**. If you do deliver the importer as a
+    *separate* software component on a Cloud/2025 target, release the consumer‑referenced surface (the 4
+    abstract entities `ZSSI_A_IMPORT` / `ZSSI_A_IMPORT_FILE` / `ZSSI_A_FILE` / `ZSSI_A_RESULT`, the 2 abstract
+    BDEFs, and `ZCL_SSI_IMPORT_ACTION` / `ZIF_SSI_IMPORTER` if called directly) via each object's **API State**
+    editor → C1 *Released*, *Use in Cloud Development*. (Releasing your own objects is a Cloud capability;
+    on plain on‑prem 2023 it is not assignable, and ATC already returns 0 findings there.)
