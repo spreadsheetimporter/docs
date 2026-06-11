@@ -1,9 +1,9 @@
 name: ci
 
+# Strict build validation on PRs. Pushes to main are built + published by deploy.yml.
 on:
-  push:
-    branches: [ main ]
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -19,10 +19,3 @@ jobs:
           python-version: '3.x'
       - run: pip install -r requirements.txt
       - run: mkdocs build --strict
-
-  # ---------------------------------------------------------------------------
-  # Deploy is intentionally NOT wired yet. The combined site will be published
-  # once the domain decision (vs. the existing docs.spreadsheet-importer.com,
-  # which serves the UI5 docs) and the UI5-docs incorporation are settled.
-  # To deploy to GitHub Pages later, add a job that runs `mkdocs gh-deploy`.
-  # ---------------------------------------------------------------------------
