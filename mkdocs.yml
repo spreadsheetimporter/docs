@@ -1,5 +1,5 @@
 site_name: Spreadsheet Importer — Documentation
-site_url: https://spreadsheetimporter.github.io/docs/
+site_url: https://docs.spreadsheet-importer.com/
 site_description: >-
   Documentation for the Spreadsheet Importer family — the UI5 frontend component
   and the server-side ABAP RAP backend importer.
@@ -12,53 +12,124 @@ site_dir: site
 nav:
   - Home: index.md
   - UI5 Component (Frontend):
-      - Overview: ui5/index.md
+      - ui5/index.md
+      - Getting Started: ui5/pages/GettingStarted.md
+      - Core Concepts:
+          - How it works: ui5/pages/HowItWorks.md
+          - Configuration: ui5/pages/Configuration.md
+          - Null & Empty Values: ui5/pages/NullHandling.md
+          - Events: ui5/pages/Events.md
+          - Error Handling: ui5/pages/Checks.md
+      - Features:
+          - Using UPDATE: ui5/pages/Update.md
+          - Button Control: ui5/pages/Button.md
+          - Deep Download: ui5/pages/spreadsheetdownload.md
+          - CAP CDS Plugin: ui5/pages/CdsPlugin.md
+          - Table Selector: ui5/pages/TableSelector.md
+          - Wizard: ui5/pages/Wizard.md
+      - Pro Edition:
+          - Installation: ui5/pages/Pro/install.md
+          - Deep Create: ui5/pages/Pro/deepcreate.md
+      - Integration:
+          - TypeScript: ui5/pages/Typescript.md
+          - Central Deployment: ui5/pages/CentralDeployment.md
+          - Supported Versions: ui5/pages/SupportVersions.md
+      - Reference:
+          - API Reference: ui5/pages/APIReference.md
+          - Changelogs: ui5/pages/CHANGELOGSPREADSHEETIMPORTER.md
+          - Troubleshooting: ui5/pages/Troubleshooting.md
+      - Resources:
+          - User Documentation: ui5/pages/UserDocumentation.md
+          - Use Cases: ui5/pages/UseCases.md
+      - Development:
+          - Getting Started: ui5/pages/Development/GettingStarted.md
+          - Testing:
+              - wdi5 Tests: ui5/pages/Development/wdi5.md
+              - OPA5 Tests: ui5/pages/Development/opa5.md
+          - Update: ui5/pages/Development/Update.md
+          - Documentation: ui5/pages/Development/Docs.md
+          - Prettier & Commit Linting: ui5/pages/Development/PrettierAndCommitlint.md
+          - GitHub Actions: ui5/pages/Development/GitHubActions.md
+          - Sample Apps: ui5/pages/Development/SampleApps.md
+          - Spreadsheet Download: ui5/pages/Development/SpreadsheetDownload.md
   - ABAP Importer (Backend):
-      - Overview: abap/index.md
+      - abap/index.md
       - Integration Guide: abap/integration-guide.md
       - Public API Contract: abap/public-api-contract.md
       - Usage Cookbook: abap/usage-cookbook.md
 
 theme:
   name: material
+  custom_dir: docs/ui5/overrides
   palette:
     - media: '(prefers-color-scheme: dark)'
       scheme: slate
+      primary: custom
+      accent: custom
       toggle:
         icon: material/brightness-4
-        name: Switch to light mode
+        name: Switch to system preference
     - media: '(prefers-color-scheme: light)'
       scheme: default
+      primary: custom
+      accent: custom
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
+  logo: ui5/images/Logo_square.png
+  favicon: ui5/images/Logo_square.png
+  font: false
   features:
-    - navigation.sections
+    - navigation.indexes
     - navigation.top
     - navigation.tracking
     - content.code.copy
     - content.tabs.link
     - toc.follow
     - search.suggest
+    - palette.switch
+
+extra_css:
+  - ui5/stylesheets/extra.css
 
 plugins:
   - search
+  - minify:
+      minify_html: true
 
 markdown_extensions:
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - admonition
   - attr_list
   - md_in_html
   - tables
-  - footnotes
+  - codehilite:
+      guess_lang: false
   - toc:
       permalink: true
-  - pymdownx.superfences
+  - pymdownx.betterem:
+      smart_enable: all
   - pymdownx.details
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.keys
+  - pymdownx.smartsymbols
   - pymdownx.tabbed:
       alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+  - pymdownx.caret
+  - pymdownx.snippets
   - pymdownx.highlight:
       anchor_linenums: true
-  - pymdownx.inlinehilite
+      line_spans: __span
+      pygments_lang_class: true
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg

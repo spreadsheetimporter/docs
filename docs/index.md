@@ -43,6 +43,5 @@ can keep small imports in the browser and offload large ones to ABAP.
   [Integration Guide](abap/integration-guide.md).
 - **Extending the import?** See [Extension hooks](abap/integration-guide.md#extension-hooks-zif_ssi_hooks)
   (`ZIF_SSI_HOOKS`) and the runnable [Usage Cookbook](abap/usage-cookbook.md).
-- **Frontend component?** The full UI5 docs are at
-  [docs.spreadsheet-importer.com](https://docs.spreadsheet-importer.com/) — see the
-  [UI5 overview](ui5/index.md) here for the map.
+- **Frontend component?** See the [UI5 component docs](ui5/index.md) — getting started,
+  configuration, events, UPDATE, the CAP CDS plugin, and the full API reference.
