@@ -1,47 +1,61 @@
-# Spreadsheet Importer — Documentation
+# UI5 Spreadsheet Upload Component
 
-The **Spreadsheet Importer** lets your users get Excel (`.xlsx`) and CSV data into SAP — from the
-browser, from the backend, or both. It comes in two complementary parts that share one philosophy
-(import **through** your application layer, so your validations and authorizations always run):
+![UI5 Spreadsheet Importer Logo](ui5/images/Logo_wide.png){ width="400" .logo-light }
+![UI5 Spreadsheet Importer Logo Dark](ui5/images/Logo_wide_dark_grey.png){ width="400" .logo-dark }
 
-<div class="grid cards" markdown>
+This component provides functionality for the bulk upload of data and the quick creation of records, with support for standard identification. Its use is independent of the backend, OData version, and Fiori scenario. Importing data is achieved by reading Spreadsheet files and utilizing standard digital APIs. The component does not submit the file itself but instead submits the data extracted from the Spreadsheet files. Its integration is designed to be as simple as possible, ideally requiring no configuration.
 
--   :material-microsoft-excel: **UI5 Spreadsheet Importer** *(frontend)*
+[**Get Started**](./ui5/pages/GettingStarted.md){: .md-button .md-button--primary .sap-icon-initiative }
+[**Live Demo**](https://livedemo.spreadsheet-importer.com/){: .md-button .md-button--secondary .sap-icon-initiative }
 
-    A UI5 custom control that adds a spreadsheet‑upload dialog to any UI5 / Fiori app. It parses and
-    validates **in the browser**, then writes through the app's OData service (or the CAP CDS plugin).
+For information about the currently supported OData and UI5 Versions, click [here](./ui5/pages/SupportVersions.md).  
+A quick integration tutorial for this component is available on YouTube [here](https://www.youtube.com/watch?v=dODt9ZWmi4A).
 
-    [→ UI5 component docs](ui5/index.md)
+<!-- prettier-ignore-start -->
+!!! danger "Commercial License Required"
+    This component is licensed under the SpreadsheetImporter Commercial License since version 2.0.0. For details, see [LICENSE.md](https://github.com/spreadsheetimporter/ui5-cc-spreadsheetimporter/blob/main/LICENSE.md). The version 1.x is licensed under the Apache License 2.0 and remains free of charge but no major updates will be provided.
+<!-- prettier-ignore-end -->
 
--   :material-server: **ABAP Spreadsheet Importer** *(backend)*
+!!! tip "Also available: a server-side ABAP importer"
+    Need to import in the **backend** — large files, or straight into a RAP business object? The
+    **[ABAP Spreadsheet Importer](abap/index.md)** parses xlsx/CSV in your S/4HANA / BTP ABAP system and
+    creates the rows through your own RAP BO via EML. Find it under **Integration → ABAP** in the navigation.
 
-    A reusable **server‑side ABAP RAP** component. It parses xlsx/CSV **in the backend** and creates the
-    rows through your own RAP business object via EML — so the BO's determinations, validations,
-    numbering and authorizations all run. Built for large files and server‑side processing.
+## Feature Overview
 
-    [→ ABAP importer docs](abap/index.md)
+- Supports upload from List Report/Object Page in Fiori Elements with or without draft
+- Usable across all Fiori scenarios (Fiori Elements, Freestyle, OpenUI5, V2/V4)
+- Includes several frontend checks
+- Capability to download a pre-generated Spreadsheet template
+- Extension Points for uploading to App or sending to the backend
+- Supports multiversion namespace in Fiori Launchpad
+- Provides multilanguage support (DE, EN, ES, FR, HI, IT, JA, ZH)
+- Option to send to Backend in batch or single requests (batch size configurable)
+- Standalone Mode (upload to app without sending to backend)
+- Functionality to preview uploaded data
+- Automatic draft activation
+- Button control for simplified integration
 
-</div>
+## **Support**
 
-## Which one do I need?
+For discussions about the suitability of the component for your use case, you can schedule an appointment [here](https://outlook.office365.com/owa/calendar/UI5ExcelUploadComponent@marianzeis.de/bookings/) free of charge.
 
-| | UI5 component *(frontend)* | ABAP importer *(backend)* |
-|---|---|---|
-| **Runs in** | the browser (your UI5 / Fiori app) | your S/4HANA or BTP ABAP backend |
-| **Writes via** | the app's OData service / CAP CDS plugin | your own RAP BO, via dynamic EML |
-| **Best for** | interactive uploads, rich inline validation, any UI5 app | large files, server‑side processing, RAP projects |
-| **Install** | npm / UI5 Tooling | abapGit |
-| **License** | open source (+ optional Pro edition) | commercial component |
+If you encounter implementation issues or bugs, you can open an issue [here](https://github.com/spreadsheetimporter/ui5-cc-spreadsheetimporter/issues/new/choose).  
+For urgent assistance or special requirements, please schedule an appointment [here](https://outlook.office365.com/owa/calendar/UI5ExcelUploadComponent@marianzeis.de/bookings/) at a fixed rate.
 
-**They interoperate.** The UI5 component can hand a file straight to the ABAP backend above a
-configurable row threshold — the same upload dialog, parsed and inserted server‑side — so a single app
-can keep small imports in the browser and offload large ones to ABAP.
+## Live Demo
 
-## Quick links
+You can try this component live at:  
+<https://livedemo.spreadsheet-importer.com/>
 
-- **New to the backend importer?** Start with the [ABAP overview](abap/index.md), then the
-  [Integration Guide](abap/integration-guide.md).
-- **Extending the import?** See [Extension hooks](abap/integration-guide.md#extension-hooks-zif_ssi_hooks)
-  (`ZIF_SSI_HOOKS`) and the runnable [Usage Cookbook](abap/usage-cookbook.md).
-- **Frontend component?** See the [UI5 component docs](ui5/index.md) — getting started,
-  configuration, events, UPDATE, the CAP CDS plugin, and the full API reference.
+The demo app uses OData V4, UI5 version 1.136, and a CAP backend.  
+Data is reset every hour on the hour.
+
+## Blogs
+
+Find a selection of blog posts about this control:
+
+- [Simplifying Spreadsheet Upload in Fiori Elements: The Open Source and Easy-to-Use UI5 Custom Control](https://blogs.sap.com/2023/02/17/simplifying-excel-upload-in-fiori-elements-the-open-source-and-easy-to-use-ui5-custom-control/)
+- [Create a UI5 Custom Library with Versioning Using a Multi-Version Namespace](https://blogs.sap.com/2023/03/12/create-a-ui5-custom-library-with-versioning-using-a-multi-version-namespace/)
+- [Automating UI5 Testing with GitHub Actions and wdi5 in Multiple Scenarios](https://blogs.sap.com/2023/04/05/automating-ui5-testing-with-github-actions-and-wdi5-in-multiple-scenarios/)
+- [Load Data from a Spreadsheet File in UI5 and Display the Data in a Table with this Open Source Component](https://blogs.sap.com/2023/04/13/load-data-from-an-excel-file-in-ui5-and-display-the-data-in-a-table-with-this-open-source-component/)

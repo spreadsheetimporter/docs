@@ -2,7 +2,7 @@
 
 A reusable, **server-side** ABAP RAP component that imports Excel (`.xlsx`) and CSV files into a
 consuming RAP business object via dynamic EML — the ABAP counterpart to the
-[UI5 Spreadsheet Importer](../ui5/index.md). Parsing and inserting happen **in the backend**
+[UI5 Spreadsheet Importer](../index.md). Parsing and inserting happen **in the backend**
 (offloading the browser for large files), and because inserts go through EML the consuming BO's
 determinations, validations and authorizations all run — unlike a raw DB insert.
 

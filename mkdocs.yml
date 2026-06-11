@@ -1,7 +1,7 @@
-site_name: Spreadsheet Importer — Documentation
+site_name: UI5 Custom Control Spreadsheet Upload
 site_url: https://docs.spreadsheet-importer.com/
 site_description: >-
-  Documentation for the Spreadsheet Importer family — the UI5 frontend component
+  Documentation for the Spreadsheet Importer — the UI5 frontend custom control
   and the server-side ABAP RAP backend importer.
 repo_name: spreadsheetimporter/docs
 repo_url: https://github.com/spreadsheetimporter/docs
@@ -11,52 +11,51 @@ site_dir: site
 
 nav:
   - Home: index.md
-  - UI5 Component (Frontend):
-      - ui5/index.md
-      - Getting Started: ui5/pages/GettingStarted.md
-      - Core Concepts:
-          - How it works: ui5/pages/HowItWorks.md
-          - Configuration: ui5/pages/Configuration.md
-          - Null & Empty Values: ui5/pages/NullHandling.md
-          - Events: ui5/pages/Events.md
-          - Error Handling: ui5/pages/Checks.md
-      - Features:
-          - Using UPDATE: ui5/pages/Update.md
-          - Button Control: ui5/pages/Button.md
-          - Deep Download: ui5/pages/spreadsheetdownload.md
-          - CAP CDS Plugin: ui5/pages/CdsPlugin.md
-          - Table Selector: ui5/pages/TableSelector.md
-          - Wizard: ui5/pages/Wizard.md
-      - Pro Edition:
-          - Installation: ui5/pages/Pro/install.md
-          - Deep Create: ui5/pages/Pro/deepcreate.md
-      - Integration:
-          - TypeScript: ui5/pages/Typescript.md
-          - Central Deployment: ui5/pages/CentralDeployment.md
-          - Supported Versions: ui5/pages/SupportVersions.md
-      - Reference:
-          - API Reference: ui5/pages/APIReference.md
-          - Changelogs: ui5/pages/CHANGELOGSPREADSHEETIMPORTER.md
-          - Troubleshooting: ui5/pages/Troubleshooting.md
-      - Resources:
-          - User Documentation: ui5/pages/UserDocumentation.md
-          - Use Cases: ui5/pages/UseCases.md
-      - Development:
-          - Getting Started: ui5/pages/Development/GettingStarted.md
-          - Testing:
-              - wdi5 Tests: ui5/pages/Development/wdi5.md
-              - OPA5 Tests: ui5/pages/Development/opa5.md
-          - Update: ui5/pages/Development/Update.md
-          - Documentation: ui5/pages/Development/Docs.md
-          - Prettier & Commit Linting: ui5/pages/Development/PrettierAndCommitlint.md
-          - GitHub Actions: ui5/pages/Development/GitHubActions.md
-          - Sample Apps: ui5/pages/Development/SampleApps.md
-          - Spreadsheet Download: ui5/pages/Development/SpreadsheetDownload.md
-  - ABAP Importer (Backend):
-      - abap/index.md
-      - Integration Guide: abap/integration-guide.md
-      - Public API Contract: abap/public-api-contract.md
-      - Usage Cookbook: abap/usage-cookbook.md
+  - Getting Started: ui5/pages/GettingStarted.md
+  - Core Concepts:
+      - How it works: ui5/pages/HowItWorks.md
+      - Configuration: ui5/pages/Configuration.md
+      - Null & Empty Values: ui5/pages/NullHandling.md
+      - Events: ui5/pages/Events.md
+      - Error Handling: ui5/pages/Checks.md
+  - Features:
+      - Using UPDATE: ui5/pages/Update.md
+      - Button Control: ui5/pages/Button.md
+      - Deep Download: ui5/pages/spreadsheetdownload.md
+      - CAP CDS Plugin: ui5/pages/CdsPlugin.md
+      - Table Selector: ui5/pages/TableSelector.md
+      - Wizard: ui5/pages/Wizard.md
+  - Integration:
+      - TypeScript: ui5/pages/Typescript.md
+      - Central Deployment: ui5/pages/CentralDeployment.md
+      - Supported Versions: ui5/pages/SupportVersions.md
+      - ABAP (Backend Importer):
+          - Overview: abap/index.md
+          - Integration Guide: abap/integration-guide.md
+          - Public API Contract: abap/public-api-contract.md
+          - Usage Cookbook: abap/usage-cookbook.md
+  - Reference:
+      - API Reference: ui5/pages/APIReference.md
+      - Changelogs: ui5/pages/CHANGELOGSPREADSHEETIMPORTER.md
+      - Troubleshooting: ui5/pages/Troubleshooting.md
+  - Resources:
+      - User Documentation: ui5/pages/UserDocumentation.md
+      - Use Cases: ui5/pages/UseCases.md
+  - Development:
+      - Getting Started: ui5/pages/Development/GettingStarted.md
+      - Testing:
+          - wdi5 Tests: ui5/pages/Development/wdi5.md
+          - OPA5 Tests: ui5/pages/Development/opa5.md
+      - Documentation: ui5/pages/Development/Docs.md
+      - Prettier & Commit Linting: ui5/pages/Development/PrettierAndCommitlint.md
+      - GitHub Actions: ui5/pages/Development/GitHubActions.md
+      - Sample Apps: ui5/pages/Development/SampleApps.md
+      - Spreadsheet Download: ui5/pages/Development/SpreadsheetDownload.md
+
+# Pages intentionally built but kept out of the sidebar (as in the original UI5 docs).
+not_in_nav: |
+  /ui5/pages/Pro/
+  /ui5/pages/Development/Update.md
 
 theme:
   name: material
@@ -80,17 +79,15 @@ theme:
   favicon: ui5/images/Logo_square.png
   font: false
   features:
-    - navigation.indexes
-    - navigation.top
-    - navigation.tracking
+    - navigation.expand
     - content.code.copy
-    - content.tabs.link
-    - toc.follow
-    - search.suggest
     - palette.switch
 
 extra_css:
   - ui5/stylesheets/extra.css
+
+extra_javascript:
+  - javascripts/nav-collapse.js
 
 plugins:
   - search
