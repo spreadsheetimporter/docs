@@ -14,6 +14,7 @@
 | Drafts created as active rows | No draft adapter registered for the BO | Generate + register a draft adapter — the generic engine is active‑only |
 | Big file slow / memory | XCO holds the workbook in memory; one huge commit | Lower `rowThreshold`, tune `chunk_size`; consider splitting the file |
 | `COMMIT ENTITIES is not allowed with this status` dump | You called the engine from inside a RAP action/handler | The engine owns the commit — call it from your own job/controller (or set `defer_commit` so the framework commits at request end); the upload action must only *store* the file |
+| Fiori `importUpload` dialog: `Parser error … while parsing an XML stream` on submit | S/4HANA 2023 (758) gateway can't deserialize an inline `Edm.Stream` action parameter | Use the base64 `importExcel` channel (e.g. an FE custom action) on 758; the native dialog works on BTP ABAP / S/4HANA Cloud — see [Fiori Elements & file upload](fiori-elements.md#which-channel-works-where-verified) |
 | Upload "succeeds", row has empty fields | A typed `CREATE FROM` without `%control` | Use `CREATE FIELDS ( … ) WITH` (auto‑sets control); the shipped handler / `fill_line` already do |
 
 ## Behaviour worth knowing
