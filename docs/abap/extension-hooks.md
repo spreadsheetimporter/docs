@@ -48,10 +48,11 @@ ENDMETHOD.
   turns a thrown exception into an `E` message, so the never‑raises contract still holds.
 - A **wrong‑typed** `hooks` object (one that does not implement `ZIF_SSI_HOOKS`) **fails the import
   closed** — configured hooks are never silently skipped.
-- **Coverage:** all five hooks run on the **generic engine** (flat active create) and the facade. A
-  generated **deep/draft/upsert adapter** runs `coerce_field` / `on_before_persist` only when
-  regenerated with a hook‑aware `ZCL_SSI_ADAPTER_GEN` (`on_rows_parsed` / `on_message` / `on_completed`
-  always run — they sit in the facade).
+- **Coverage:** the **generic engine** runs `coerce_field` / `on_before_persist` only; `on_rows_parsed`
+  / `on_message` / `on_completed` run in the **facade** (`zcl_ssi_import`) — so a direct
+  `get_importer->import` call gets only the two engine hooks. **No** generated adapter — flat, deep, or
+  upsert — runs `coerce_field` / `on_before_persist` today; that would require regenerating with a
+  hook‑aware `ZCL_SSI_ADAPTER_GEN`.
 
 Full reference + a runnable example: the
 [public API contract](public-api-contract.md#extension-hooks-zif_ssi_hooks) and the
