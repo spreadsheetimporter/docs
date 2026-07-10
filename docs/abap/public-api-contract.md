@@ -37,7 +37,7 @@ Every public API below has a **runnable, copy‑pasteable example**, each proven
 
 | Object | Role | How a consumer uses it |
 |---|---|---|
-| **`ZIF_SSI_TYPES`** | Shared types: `ts_options` (incl. `mode`, `hooks`), `ts_row`/`ts_cell`, `ts_result`/`ts_message`/`ts_key`, `tt_map`, the `gc_mode`/`gc_comp` enums | Reference the types in your own code |
+| **`ZIF_SSI_TYPES`** | Shared types: `ts_options` (incl. `mode`, `hooks`), `ts_row`/`ts_cell`, `ts_result`/`ts_message`/`ts_key`, `tt_map`, the `gc_mode` enum | Reference the types in your own code |
 | **`ZIF_SSI_IMPORTER`** | The `import( it_rows is_options ) RETURNING rs_result` contract | The seam to **mock** the library (see [`test doubles`](#testing-against-the-library)) |
 | **`ZIF_SSI_HOOKS`** | Optional developer **extension hooks** — `on_rows_parsed` / `coerce_field` / `on_before_persist` / `on_message` / `on_completed` (all `DEFAULT IGNORE`) | Implement the ones you need; inject via `ts_options-hooks` (see [Extension hooks](#extension-hooks-zif_ssi_hooks)) |
 | **`ZCL_SSI_IMPORT`** | Facade — `import_file` (auto-detect xlsx/CSV) / `import_rows`. **Never raises** (errors → `ts_message`) | The simplest entry point |
@@ -46,7 +46,7 @@ Every public API below has a **runnable, copy‑pasteable example**, each proven
 | **`ZCL_SSI_TEMPLATE`** | `build_create_template( iv_entity, iv_sample_rows, it_mapping )` | Generate an `.xlsx` CREATE template |
 | **`ZCL_SSI_ADAPTER_GEN`** | Code generators: `generate_flat` / `generate_deep` / `generate_upsert` / `generate_action` / `generate_template_function` | You **run** these to emit a typed adapter for your BO |
 | **`ZCL_SSI_FACTORY`** | `register( iv_entity, iv_class )` — register your adapter | Wire a generated adapter for an entity |
-| **`ZCL_SSI_PARSER`** | `parse_xlsx` / `parse_csv` / `coerce` / `resolve_field` — stateless parsing utilities (`parse_xlsx` raises `zcx_ssi_parse`, see [Exceptions](#exceptions)) | Advanced/standalone parsing |
+| **`ZCL_SSI_PARSER`** | `parse_xlsx` / `parse_csv` / `coerce` / `convexit_of` — stateless parsing utilities (`parse_xlsx` raises `zcx_ssi_parse`, see [Exceptions](#exceptions)) | Advanced/standalone parsing |
 | **Abstract & custom entities** — `ZSSI_A_IMPORT` · `ZSSI_A_IMPORT_FILE` · `ZSSI_A_FILE` · `ZSSI_A_RESULT` · `ZSSI_A_TEMPLATE` · `ZSSI_A_TFILE` · `ZSSI_C_TEMPLATE` | The action/function parameter & result shapes | Reference them in your BDEF `action`/`function` signatures |
 | **`ZSSI_IMPORTER`** (message class) | The translatable messages | Surfaced in `ts_message`; reference numbers if you map them |
 
@@ -90,7 +90,7 @@ one‑line RAP delegate, inject hooks via the optional `is_options`:
 `%param` format fields override the base where supplied. Calling the importer **directly**
 (`zcl_ssi_factory=>get_importer` → `import`) bypasses the facade, so only the engine‑level hooks run
 there. `coerce_field` and `on_before_persist` are live on the **generic engine** (flat active
-create); a generated **deep/draft/upsert adapter** gets them once regenerated with a `ZCL_SSI_ADAPTER_GEN`
+create); no generated adapter (**flat, deep or upsert**) runs them today — an adapter gets them once regenerated with a `ZCL_SSI_ADAPTER_GEN`
 version that emits the calls (follow‑on). On the engine path `on_before_persist`'s instances table is
 anonymous (RTTC‑built) — navigate it with `ASSIGN COMPONENT` (incl. the `%CONTROL` flags) and mutate
 **in place**; a typed adapter passes its typed table. Worked examples: `ZCL_SSI_UNIT_HOOKS` (the library's own hook tests) and

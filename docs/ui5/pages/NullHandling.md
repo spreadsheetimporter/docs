@@ -63,7 +63,7 @@ The component will send these requests to your backend:
 { "ID": "789", "email": "", "notes": null }
 ```
 
-Notice how empty cells in the Name and Phone columns don't appear in the JSON at all. This means those fields remain unchanged on the backend.
+Notice how empty cells in the Name, Email, and Notes columns don't appear in the JSON at all. This means those fields remain unchanged on the backend.
 
 ## Validation Rules
 

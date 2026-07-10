@@ -115,7 +115,7 @@ openWizard: async function () {
 You can pass configuration options to override component settings:
 
 ```javascript
-openWizard: function () {
+openWizard: async function () {
           this.spreadsheetUpload = await this.getView()
      .getController()
      .getOwnerComponent()
@@ -137,7 +137,7 @@ openWizard: function () {
         debug: true                      // Enable debug mode
     };
 
-    oComponent.openWizard(wizardOptions)
+    this.spreadsheetUpload.openWizard(wizardOptions);
 }
 ```
 
@@ -147,13 +147,13 @@ The wizard supports all standard [events](Events.md):
 
 ```javascript
 // Attach events before opening wizard
-oComponent.attachUploadButtonPress(function (event) {
+this.spreadsheetUpload.attachUploadButtonPress(function (event) {
   // Handle upload completion
   const payload = event.getParameter('payload');
   console.log('Data uploaded:', payload);
 });
 
-oComponent.attachCheckBeforeRead(function (event) {
+this.spreadsheetUpload.attachCheckBeforeRead(function (event) {
   // Validate data before processing
   const sheetData = event.getParameter('sheetData');
   // Add custom validation logic

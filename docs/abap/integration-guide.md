@@ -55,7 +55,9 @@ ENDINTERFACE.
      iv_assoc = '_Items' iv_child_alias = 'Item' iv_parent_key = 'ROOTKEY' ).
    ```
    Create that class in your package (~50 lines of typed EML that fills the create lines via
-   `ZCL_SSI_UTIL=>fill_line`, sets `%is_draft`, and returns the result).
+   `ZCL_SSI_UTIL=>fill_line` and returns the result). The **flat** and **upsert** generators set
+   `%is_draft` when `is_options-is_draft = abap_true`; `generate_deep` emits **ACTIVE‑CREATE only**
+   (draft + deep/composition is out of scope), so `is_draft` is ignored on the deep path.
 
 2. **Register** it once at startup so the factory routes your BO to it:
    ```abap
