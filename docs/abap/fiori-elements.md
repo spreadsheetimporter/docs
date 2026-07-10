@@ -59,58 +59,93 @@ call).
     largeObject); the user picks the file and the rows import. The action is surfaced on the list
     report / object page through a **metadata extension** (see below).
 
+    !!! note "Frontend requirement: SAPUI5 ≥ 1.135"
+        File upload as an action parameter is a Fiori Elements (OData V4) feature **added in
+        SAPUI5 1.135** (April 2025). Older UI5 versions render the `FileContent` parameter as a
+        plain field. Backend requirement: see the release matrix below.
+
 **Option fields** (on both parameters): `IsCsv` force CSV (else magic‑byte auto‑detect) · `IsDraft`
 create drafts · `ChunkSize` rows/LUW (0 = default 500) · `DecimalSeparator` `'.'`/`','` · `HeaderRow`
 1‑based header row. See [Options & data types](options.md).
 
 ## Surfacing the action in Fiori Elements (metadata extension)
 
-In a Fiori Elements app the import action becomes a **button in the table toolbar** (and the upload
-parameter renders a file picker) via a CDS **metadata extension** (DDLX) on your projection view — no
-custom UI code. Conceptually:
+In a Fiori Elements app the import action becomes a **button in the table toolbar** via a CDS
+**metadata extension** (DDLX) on your projection view — no custom UI code. This is the (verified,
+runnable) annotation from the samples' demo BO:
 
 ```abap
 @Metadata.layer: #CORE
-annotate entity ZC_YourProjection with
-{
-  @UI.lineItem: [ { position: 10 } ]                       // a column …
-  YourField;
+@UI: {
+  headerInfo: { typeName: 'Demo Order', typeNamePlural: 'Demo Orders',
+                title: { type: #STANDARD, value: 'OrderId' } }
 }
+annotate view ZSSI_C_S_ORD with
+{
+  // the #FOR_ACTION line items put the import buttons in the table toolbar
+  @UI: { lineItem:       [ { position: 10, importance: #HIGH },
+                           { type: #FOR_ACTION, dataAction: 'importUpload', label: 'Import Spreadsheet (File Upload)' },
+                           { type: #FOR_ACTION, dataAction: 'importExcel',  label: 'Import Spreadsheet (Base64)' } ],
+         identification: [ { position: 10 },
+                           { type: #FOR_ACTION, dataAction: 'importUpload', label: 'Import Spreadsheet (File Upload)' } ],
+         selectionField: [ { position: 10 } ] }
+  OrderId;
 
-// the action on the entity's toolbar:
-@UI: { lineItem:        [ { type: #FOR_ACTION, dataAction: 'importUpload', label: 'Import Excel' } ],
-       identification:  [ { type: #FOR_ACTION, dataAction: 'importUpload', label: 'Import Excel' } ] }
+  @UI: { lineItem: [ { position: 20 } ], identification: [ { position: 20 } ] }
+  Customer;
+}
 ```
 
+The full stack around it: projection view (`@Metadata.allowExtensions: true`, provider contract
+`transactional_query`) → behavior projection (`use action importExcel; use action importUpload;
+use function getCreateTemplate;`) → service definition → OData V4 UI service binding.
+
 !!! info "A complete, runnable example is in the samples"
-    The [samples repo](https://github.com/spreadsheetimporter/abap-spreadsheetimporter-samples) wires the
-    demo BO end‑to‑end for Fiori Elements — projection view, behaviour projection, service definition,
-    OData V4 UI service binding, and the metadata extension that puts the import button on the list
-    report — so you can build a Fiori Elements app on top and upload Excel files. The exact objects +
-    DDLX are shown here once published.
+    The [samples repo](https://github.com/spreadsheetimporter/abap-spreadsheetimporter-samples) ships the
+    whole thing — the wired demo BO (`ZSSI_R_S_ORD` + one‑line handlers), the projection stack with the
+    DDLX above, the published OData V4 service, **and a runnable Fiori Elements app**
+    (`app/demo-orders`) on top of it, including a custom "API channel" action
+    (`webapp/ext/ImportSpreadsheet.js`: file picker → base64 → `importExcel`) that works on every
+    supported release.
 
-## The 758 on‑prem Fiori upload caveat
+## Which channel works where (verified)
 
-On **S/4HANA 2023 on‑prem**, the base64 **API channel is the universal, fully‑wired path**. The Fiori
-`importUpload` control still renders a working `Edm.Stream` upload, but the mime‑type filter and file
-name are not auto‑bound in the dialog — a confirmed **gateway framework‑version gap, not a modelling
-bug**. The importer auto‑detects the file type from magic bytes regardless, so the import works either
-way.
+| | S/4HANA 2023 on‑prem (758) | BTP ABAP / S/4HANA Cloud (newer gateway) |
+|---|---|---|
+| **Native `importUpload` dialog** (needs SAPUI5 ≥ 1.135) | dialog **renders** — file‑upload control + the shipped field labels — but **submit fails**: the gateway cannot deserialize an inline `Edm.Stream` action parameter (`Parser error … while parsing an XML stream`) | ✅ works zero‑code (gateway emits the `Core.*` terms and accepts the stream payload) |
+| **Base64 `importExcel`** — via API or an FE **custom action** | ✅ **works end‑to‑end** — verified live: per‑row BO messages (e.g. *"key value already in use"*) surface in the FE result dialog | ✅ works |
+
+So on 758 build the upload button as a small FE **custom action** that base64‑encodes the picked file
+and calls `importExcel` (the sample's
+[`ImportSpreadsheet.js`](https://github.com/spreadsheetimporter/abap-spreadsheetimporter-samples/blob/main/app/demo-orders/webapp/ext/ImportSpreadsheet.js)
+is exactly that, ~60 lines). Keep `importUpload` modeled — it lights up with zero change once the
+backend moves to a gateway that supports it.
+
+## The 758 on‑prem gateway gap (detail)
+
+On **S/4HANA 2023 on‑prem**, the base64 **API channel is the universal, fully‑wired path**. The native
+Fiori upload is blocked by the gateway in two ways — both **framework‑version gaps, not modelling
+bugs** (verified empirically against a live 758 system, from curl *and* from a real FE 1.136 app):
+
+1. `$metadata` carries **none** of the `Core.MediaType` / `Core.ContentDisposition` /
+   `Core.AcceptableMediaTypes` terms Fiori Elements uses to wire the mime filter and file name
+   (the `@EndUserText.label`s *do* arrive — the dialog fields are nicely labeled).
+2. The action `POST` itself is rejected: the 758 gateway cannot deserialize an inline stream value in
+   the JSON action payload, in any representation (with/without `@odata.mediaContentType`, base64 or
+   base64url, OData 4.0 or 4.01 headers).
 
 ??? note "Why (the gateway detail)"
     `ZSSI_A_FILE` is modelled *verbatim* per SAP's documented "File Upload as an Action Parameter" recipe
     (`@Semantics.largeObject.mimeType/.fileName/.contentDispositionPreference:#INLINE` on `abap.rawstring`,
-    `@UI.hidden` on mime/filename). The live `$metadata` on 758 **does** render `FileContent` as
-    `Edm.Stream`, **but** the RAP→OData V4 gateway does **not** translate `@Semantics.largeObject` into the
-    `Core.MediaType` / `Core.ContentDisposition` / `Core.IsMediaType` / `Core.AcceptableMediaTypes` terms
-    that Fiori Elements needs to wire the mime filter and file name. The 758 `$metadata` carries **zero** of
-    those `Core.*` terms on the action‑parameter ComplexType.
+    `@UI.hidden` on mime/filename, `acceptableMimeTypes`). The live `$metadata` on 758 **does** render
+    `FileContent` as `Edm.Stream` (which is why the 1.135+ dialog shows the upload control), **but** the
+    RAP→OData V4 gateway does **not** translate `@Semantics.largeObject` into the `Core.*` terms, and its
+    JSON deserializer predates inline stream values in action payloads.
 
-    This translation is done by the gateway metadata generator on SAP BTP ABAP / S/4HANA Cloud (and newer
-    on‑prem gateway SPs); it is not expressible via DDLX, a raw `@Core.*` passthrough, or a SRVD
-    annotation — the only on‑prem path is a gateway SP/note upgrade. Because the modelling already matches
-    SAP's recipe byte‑for‑byte, the dialog **auto‑wires on Cloud / a newer on‑prem gateway with zero change**
-    to this component.
+    Neither half is expressible via DDLX, a raw `@Core.*` passthrough, or a SRVD annotation — the only
+    on‑prem path is a gateway SP/note upgrade. Because the modelling already matches SAP's recipe
+    byte‑for‑byte, the dialog **auto‑wires on Cloud / a newer on‑prem gateway with zero change** to this
+    component.
 
 ??? note "C1 API release (only for cross‑software‑component consumption on Cloud)"
     The "use of non‑released API" ATC finding only fires when a *restricted* (ABAP for Cloud Development)

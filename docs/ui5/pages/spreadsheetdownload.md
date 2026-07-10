@@ -24,11 +24,11 @@ This means that you can download all Orders, including the OrderItems, ShippingI
 | Option            | Description                                     | Default     | Type            |
 | ----------------- | ----------------------------------------------- | ----------- | --------------- |
 | `addKeysToExport` | Adds keys to the export file                    | `false`     | boolean         |
-| `setDraftStatus`  | Sets the draft status in `IsActiveEntity`       | `false`     | boolean         |
+| `setDraftStatus`  | Sets the draft status in `IsActiveEntity`       | `true`      | boolean         |
 | `filename`        | Defines the filename for the export file        | Entity Name | string          |
 | `deepExport`      | Turn on to export of sibling entities           | `false`     | boolean         |
 | `deepLevel`       | Defines the level of sibling entities to export | `0`         | number          |
-| `showOptions`     | Shows options dialog for users                  | `false`     | boolean         |
+| `showOptions`     | Shows options dialog for users                  | `true`      | boolean         |
 | `columns`         | Defines the columns to export                   | `{}`        | object or array |
 
 ### Sample Usage

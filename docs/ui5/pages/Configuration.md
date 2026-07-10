@@ -37,7 +37,7 @@ The table below summarizes the options available for the UI5 Spreadsheet Importe
 | [`batchSize`](#batchsize)                             | Controls the size of batches sent to the backend.                | `1000`                                        | 0.11.0          | `number`   |
 | [`strict`](#strict)                                   | Controls availability of the "Continue" button in error dialogs. | `false`                                       | 0.16.0          | `boolean`  |
 | [`decimalSeparator`](#decimalseparator)               | Sets the decimal separator for numbers.                          | Browser default                               | 0.17.0          | `string`   |
-| docs:                                                 | [`nullMarker`](#nullmarker)                                      | Marker string for NULL values in Excel cells. | `'__NULL__'`    | 2.4.0      | `string` |
+| [`nullMarker`](#nullmarker)                           | Marker string for NULL values in Excel cells.                    | `'__NULL__'`                                  | 2.4.0           | `string`   |
 | [`emptyStringMarker`](#emptystringmarker)             | Marker string for empty strings (text fields only).              | `'__EMPTY__'`                                 | 2.4.0           | `string`   |
 | [`mandatoryFields`](#mandatoryfields)                 | Specifies mandatory fields to check in the spreadsheet.          | Not defined                                   | 0.15.0          | `string[]` |
 | [`skipMandatoryFieldCheck`](#skipmandatoryfieldcheck) | Skips the check for mandatory fields.                            | `false`                                       | 0.17.0          | `boolean`  |
@@ -96,8 +96,7 @@ The `directUploadConfig` option enables direct file upload to a CAP backend usin
             useCdsPlugin: true,
             localhostSupport: true,
             localhostPort: 4004,
-            csrf: true,
-            uploadTimeout: 30000
+            useCsrf: true
         },
         componentContainerData:{
             buttonText:'Excel Upload with CDS Plugin',

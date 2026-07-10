@@ -57,7 +57,7 @@ zcl_ssi_parser=>coerce(
 
 ```abap
 " .xlsx whose header row = the importer's accepted fields, so the filled file
-" re-imports with zero config. Raises cx_static_check for an unknown entity.
+" re-imports with zero config. Returns an empty xstring for an unknown entity / one with no importable fields (never raises); check xstrlen( ) > 0.
 DATA(lv_xlsx) = zcl_ssi_template=>build_create_template(
   iv_entity = 'ZSSI_R_S_ORD' iv_sample_rows = 1 ).
 " xstrlen( lv_xlsx ) > 0  -> a valid .xlsx

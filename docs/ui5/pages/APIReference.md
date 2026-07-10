@@ -2,7 +2,7 @@
 
 ### Overview
 
-The `spreadsheetimporter` component provides a way to import data from a spreadsheet into a table in the UI Builder application.
+The `spreadsheetimporter` component provides a way to import data from a spreadsheet into a table in the UI5 application.
 
 ### Constructor
 

@@ -76,7 +76,7 @@ You can add errors to the `messages` property of the `SpreadsheetUpload` control
 - `row` - the row number of the error
 - `group` - set to `true` or `false` to group the errors by title
 - `rawValue` - the raw value of the data from the spreadsheet
-- `ui5type` - the type of the error, can be `Error`, `Warning`, `Success`, `Information` or `None` from the [`MessageType](https://ui5.sap.com/#/api/sap.ui.core.MessageType) enum
+- `ui5type` - the type of the error, can be `Error`, `Warning`, `Success`, `Information` or `None` from the [`MessageType`](https://ui5.sap.com/#/api/sap.ui.core.MessageType) enum
 
 Errors with the same title will be grouped.
 
