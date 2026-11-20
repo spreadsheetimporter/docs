@@ -12,7 +12,7 @@ When the component is centrally deployed on an ABAP server, the setup is straigh
 ## Integration into UI5
 
 Integrating the component is straightforward as long as the component has access to the context or the view, as without this access, it won't function.  
-Upon creation of the component, it searches for a table in the view to utilize the binding for the upload. Other necessary details, such as metadata and draft activation actions, are also derived from the table. If no table or more than two tables are found, the table must be defined in the options.
+Upon creation of the component, it searches for a table in the view to utilize the binding for the upload. Other necessary details, such as metadata and draft activation actions, are also derived from the table. If no table or more than one table are found, the table must be defined in the options.
 
 ## Creating the Template File
 

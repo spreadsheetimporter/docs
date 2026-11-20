@@ -9,11 +9,12 @@
 | Opaque short dump on import | Lower‑case `entity_name`/`sub_name` in the dynamic EML | The component upper‑cases them; if you pass a BO/association name, give it uppercase |
 | Your validations don't run | `IN LOCAL MODE` was used (bypasses validations/auth/prechecks) | The component calls EML **non‑local** against your BO; don't enable a "local/privileged" mode unless you mean to |
 | Determination loops / times out | Your determination issues `MODIFY` that re‑triggers itself | Guard your determination (don't re‑modify the trigger field set); not a component issue |
-| Dates all blank / wrong | Native Excel date cells or wrong format | Use **text** dates in the template (see [Options & data types](options.md)) |
+| Dates all blank / wrong | Dates must be **text** in `YYYYMMDD` or `YYYY‑MM‑DD` form (an optional `Txx` time suffix is stripped); any other order (e.g. `31.12.2024`) or trailing junk is rejected | Fails **closed** with a per‑row conversion error (msg `002`, severity `E`) and the row is dropped — the value is never silently stored corrupt. Only calendar‑**range** checks apply (month `01`‑`12`, day `01`‑`31`), so an impossible date like Feb‑30 still passes and stores as‑is. See [Options & data types](options.md) |
 | Number‑range error `BEHAVIOR_ILLEGAL_STATEMENT` | Your BO's custom number range does its own `COMMIT WORK` | Set the number‑range object to **main‑memory buffering** |
 | Drafts created as active rows | No draft adapter registered for the BO | Generate + register a draft adapter — the generic engine is active‑only |
 | Big file slow / memory | XCO holds the workbook in memory; one huge commit | Lower `rowThreshold`, tune `chunk_size`; consider splitting the file |
 | `COMMIT ENTITIES is not allowed with this status` dump | You called the engine from inside a RAP action/handler | The engine owns the commit — call it from your own job/controller (or set `defer_commit` so the framework commits at request end); the upload action must only *store* the file |
+| Fiori `importUpload` dialog: `Parser error … while parsing an XML stream` on submit | S/4HANA 2023 (758) gateway can't deserialize an inline `Edm.Stream` action parameter | Use the base64 `importExcel` channel (e.g. an FE custom action) on 758; the native dialog works on BTP ABAP / S/4HANA Cloud — see [Fiori Elements & file upload](fiori-elements.md#which-channel-works-where-verified) |
 | Upload "succeeds", row has empty fields | A typed `CREATE FROM` without `%control` | Use `CREATE FIELDS ( … ) WITH` (auto‑sets control); the shipped handler / `fill_line` already do |
 
 ## Behaviour worth knowing
