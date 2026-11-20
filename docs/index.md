@@ -19,12 +19,13 @@ A quick integration tutorial for this component is available on YouTube [here](h
 !!! tip "Also available: a server-side ABAP importer"
     Need to import in the **backend** — large files, or straight into a RAP business object? The
     **[ABAP Spreadsheet Importer](abap/index.md)** parses xlsx/CSV in your S/4HANA / BTP ABAP system and
-    creates the rows through your own RAP BO via EML. Find it under **Integration → ABAP** in the navigation.
+    creates the rows through your own RAP BO via EML. Find it under **ABAP (Backend Importer)** in the navigation.
 
 ## Feature Overview
 
 - Supports upload from List Report/Object Page in Fiori Elements with or without draft
 - Usable across all Fiori scenarios (Fiori Elements, Freestyle, OpenUI5, V2/V4)
+- [Export related records](ui5/pages/spreadsheetdownload.md) and [update existing rows](ui5/pages/Update.md) with OData V2 or V4
 - Includes several frontend checks
 - Capability to download a pre-generated Spreadsheet template
 - Extension Points for uploading to App or sending to the backend

@@ -12,7 +12,7 @@ We recommend different deployment approaches depending on your platform:
 - **For ABAP systems**: Only **centralized deployment** is possible. Decentralized deployment is not supported for ABAP systems.
 - **For SAP Business Technology Platform (BTP)**: **Decentralized deployment** is recommended, though centralized deployment is also possible.
 
-For decentralized deployment in ABAP, refer to [ABAP Component Deployment](#component-deployment). For BTP deployment, special considerations are necessary, which are detailed in [BTP Deployment](#btp-deployment). A full BTP deployment example is available in this [sample project](https://github.com/spreadsheetimporter/sample-full-btp).
+For decentralized deployment in ABAP, refer to [ABAP Component Deployment](#component-deployment). For BTP deployment, special considerations are necessary, which are detailed in [BTP Deployment](#btp-environment). A full BTP deployment example is available in this [sample project](https://github.com/spreadsheetimporter/sample-full-btp).
 
 ### Decentralized Deployment
 
@@ -26,7 +26,7 @@ For decentralized deployment in ABAP, refer to [ABAP Component Deployment](#comp
     For BTP applications, decentralized deployment is the recommended approach.
 <!-- prettier-ignore-end -->
 
-In decentralized deployment, the component is included directly in each app and deployed with it. For ABAP-specific instructions, refer to [ABAP Component Deployment](#component-deployment). For BTP-specific considerations, refer to [BTP Deployment](#btp-deployment).
+In decentralized deployment, the component is included directly in each app and deployed with it. For ABAP-specific instructions, refer to [ABAP Component Deployment](#component-deployment). For BTP-specific considerations, refer to [BTP Deployment](#btp-environment).
 
 ### Central Deployment
 
@@ -323,7 +323,7 @@ openSpreadsheetUploadDialog: async function (event) {
 
 These instructions apply generally to UI5 Reuse Components, not just the Spreadsheet Importer (see [UI5 Reuse Components](https://sapui5.hana.ondemand.com/sdk/#/topic/6314fcd2510648fbaad3cee8a421030d.html)).
 
-When deploying the component decentrally to an ABAP system, its namespace is registered in the app index, just as it is with central deployment. After deploying decentrally for the first time, you can use the component centrally (see [Setup Central Deployment](#setup-central-deployment)). However, you can only deploy the component decentrally once because the namespace can only exist once in the app index.
+When deploying the component decentrally to an ABAP system, its namespace is registered in the app index, just as it is with central deployment. After deploying decentrally for the first time, you can use the component centrally (see [Setup Central Deployment](#setup-for-central-deployment)). However, you can only deploy the component decentrally once because the namespace can only exist once in the app index.
 
 This is why we recommend starting with central deployment.
 
@@ -475,7 +475,7 @@ builder:
       configuration:
         archiveName: uimodule
         includeDependencies:
-          - ui5-cc-spreadsheetimporter-v2-4-0
+          - ui5-cc-spreadsheetimporter-v2-5-0
 ```
 
 The metadata name is defined in the [`ui5.yaml`](https://github.com/spreadsheetimporter/ui5-cc-spreadsheetimporter/blob/9b61a778e5b0a5b66c15f5889334a6d684ae88de/packages/ui5-cc-spreadsheetimporter/ui5.yaml#L4) file of the component.

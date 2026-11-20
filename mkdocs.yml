@@ -1,4 +1,4 @@
-site_name: UI5 Custom Control Spreadsheet Upload
+site_name: Spreadsheet Importer
 site_url: https://docs.spreadsheet-importer.com/
 site_description: >-
   Documentation for the Spreadsheet Importer — the UI5 frontend custom control
@@ -48,6 +48,8 @@ nav:
       - Use Cases: ui5/pages/UseCases.md
   - Development:
       - Getting Started: ui5/pages/Development/GettingStarted.md
+      - Project setup: ui5/pages/Development/ProjectSetup.md
+      - OData V2 export and update: ui5/pages/Development/ODataV2-ExportAndUpdate.md
       - Testing:
           - wdi5 Tests: ui5/pages/Development/wdi5.md
           - OPA5 Tests: ui5/pages/Development/opa5.md
@@ -96,6 +98,41 @@ extra_javascript:
 
 plugins:
   - search
+  - redirects:
+      redirect_maps:
+        pages/APIReference.md: ui5/pages/APIReference.md
+        pages/Button.md: ui5/pages/Button.md
+        pages/CHANGELOGSPREADSHEETIMPORTER.md: ui5/pages/CHANGELOGSPREADSHEETIMPORTER.md
+        pages/CdsPlugin.md: ui5/pages/CdsPlugin.md
+        pages/CentralDeployment.md: ui5/pages/CentralDeployment.md
+        pages/Checks.md: ui5/pages/Checks.md
+        pages/Configuration.md: ui5/pages/Configuration.md
+        pages/Development/Docs.md: ui5/pages/Development/Docs.md
+        pages/Development/GettingStarted.md: ui5/pages/Development/GettingStarted.md
+        pages/Development/GitHubActions.md: ui5/pages/Development/GitHubActions.md
+        pages/Development/ODataV2-ExportAndUpdate.md: ui5/pages/Development/ODataV2-ExportAndUpdate.md
+        pages/Development/PrettierAndCommitlint.md: ui5/pages/Development/PrettierAndCommitlint.md
+        pages/Development/ProjectSetup.md: ui5/pages/Development/ProjectSetup.md
+        pages/Development/SampleApps.md: ui5/pages/Development/SampleApps.md
+        pages/Development/SpreadsheetDownload.md: ui5/pages/Development/SpreadsheetDownload.md
+        pages/Development/Update.md: ui5/pages/Development/Update.md
+        pages/Development/opa5.md: ui5/pages/Development/opa5.md
+        pages/Development/wdi5.md: ui5/pages/Development/wdi5.md
+        pages/Events.md: ui5/pages/Events.md
+        pages/GettingStarted.md: ui5/pages/GettingStarted.md
+        pages/HowItWorks.md: ui5/pages/HowItWorks.md
+        pages/NullHandling.md: ui5/pages/NullHandling.md
+        pages/Pro/deepcreate.md: ui5/pages/Pro/deepcreate.md
+        pages/Pro/install.md: ui5/pages/Pro/install.md
+        pages/SupportVersions.md: ui5/pages/SupportVersions.md
+        pages/TableSelector.md: ui5/pages/TableSelector.md
+        pages/Troubleshooting.md: ui5/pages/Troubleshooting.md
+        pages/Typescript.md: ui5/pages/Typescript.md
+        pages/Update.md: ui5/pages/Update.md
+        pages/UseCases.md: ui5/pages/UseCases.md
+        pages/UserDocumentation.md: ui5/pages/UserDocumentation.md
+        pages/Wizard.md: ui5/pages/Wizard.md
+        pages/spreadsheetdownload.md: ui5/pages/spreadsheetdownload.md
   - minify:
       minify_html: true
 

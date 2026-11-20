@@ -5,43 +5,9 @@ This will take a few minutes.
 
 [![Open Stable in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=569313224&machine=basicLinux32gb&devcontainer_path=.devcontainer%2Fdevcontainer.json&location=WestEurope)
 
-## Local Setup
+## Local setup
 
-### Requirements
-
-- Node.js Versions 16.18.0, 18.12.0, or later
-
-### Install required NPM Packages
-
-```sh
-# npm is already available by default
-
-# Install @sap/cds-dk if needed
-npm i -g @sap/cds-dk
-```
-
-### Quick start
-
-To quickly start the test environment, see here. See detailed information below.
-
-```sh
-git clone https://github.com/spreadsheetimporter/ui5-cc-spreadsheetimporter
-npm install --legacy-peer-deps
-# will run `build` and start CAP Server and FE Apps V4 1.108
-npm start
-```
-
-### Setup `ui5-cc-spreadsheetimporter`
-
-This is the basic setting-up to continue with the next steps.
-
-```sh
-# Clone GitHub Repo
-git clone https://github.com/spreadsheetimporter/ui5-cc-spreadsheetimporter
-
-# Install all packages including for test environment
-npm install --legacy-peer-deps
-```
+Follow [Project setup](ProjectSetup.md#run-a-sample) for the Node.js version, installation command and a working sample.
 
 ## Start Developing
 
@@ -70,8 +36,8 @@ This will copy the apps according to this [json file](https://github.com/spreads
 
 ```sh
 # Start Test Apps
-npm run start:v4fe:108
-npm run start:v2fe:108
+npm run start:v4fe
+npm run start:v2fe
 
 # Alternative with npm workspaces
 npm run start --workspace=ordersv2fe108
@@ -91,7 +57,7 @@ To run the wdi5 tests, the CAP server and the corresponding app must already be 
 You can run the test for the OData V4 UI5 Version 108 with this command:
 
 ```sh
-npm run test:v4fe:108
+npm run test --workspace=ui5-cc-spreadsheetimporter-sample -- -- ordersv4fe 108
 ```
 
 More Info on the [wdi5 Tests](./wdi5.md) site.

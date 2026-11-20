@@ -1,6 +1,6 @@
 # Deep Download Feature
 
-This feature is experimental and only available with an OData V4 backend. It allows downloading data from OData V4 backends with support for nested entities and relationships, handling complex data structures efficiently.
+Deep download exports related entities into a workbook. This page describes the OData V4 implementation. For the OData V2 implementation introduced in 2.5.0, see [OData V2 export and update](ODataV2-ExportAndUpdate.md).
 
 ## Triggering the Download
 
