@@ -1,4 +1,4 @@
-Only V4 is supported for now.
+This page describes OData V4 draft handling. For V2 support in 2.5.0, see [OData V2 export and update](ODataV2-ExportAndUpdate.md).
 
 ## OData V4
 

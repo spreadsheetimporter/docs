@@ -1,3 +1,7 @@
+# Legacy Pro deep create
+
+This page describes the historical Pro package. For operations supported in the current Community Edition, see the [API reference](../APIReference.md).
+
 With this feature, you are able to upload a spreadsheet to create multiple entities and their relations.
 
 ## Configuration

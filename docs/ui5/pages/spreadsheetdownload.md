@@ -1,10 +1,7 @@
 # Spreadsheet Deep Download
 
-<!-- prettier-ignore-start -->
-!!! warning
-    This new feature is available since version 1.5.0 and experimental and may change in the future and currently only available for OData V4.
-    If you deep download data, the OData Service need to support `expand`.
-<!-- prettier-ignore-end -->
+!!! note "Availability"
+    Deep download is experimental. It became available for OData V4 in 1.5.0. Version 2.5.0 adds OData V2. To export related entities, the service must support `$expand`.
 
 This feature downloads data from the backend and converts it to a Spreadsheet file.
 
@@ -28,7 +25,7 @@ This means that you can download all Orders, including the OrderItems, ShippingI
 | `filename`        | Defines the filename for the export file        | Entity Name | string          |
 | `deepExport`      | Turn on to export of sibling entities           | `false`     | boolean         |
 | `deepLevel`       | Defines the level of sibling entities to export | `0`         | number          |
-| `showOptions`     | Shows options dialog for users                  | `false`     | boolean         |
+| `showOptions`     | Shows options dialog for users                  | `true`     | boolean         |
 | `columns`         | Defines the columns to export                   | `{}`        | object or array |
 
 ### Sample Usage

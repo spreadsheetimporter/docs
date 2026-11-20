@@ -1,38 +1,7 @@
-## Static Site Generator
+# Contributing to the documentation
 
-The documentation is set up with [MkDocs](https://www.mkdocs.org/) and [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/).
+The [documentation repository](https://github.com/spreadsheetimporter/docs) hosts the public UI5 and ABAP guides. Edit UI5 guides in `docs/ui5/pages/`. Add new pages to the navigation in `mkdocs.yml`.
 
-## Usage
+To preview a change, use the [local setup instructions](https://github.com/spreadsheetimporter/docs#build-locally) and run `mkdocs serve`. Run `mkdocs build --strict` before opening a pull request.
 
-### Configuration
-
-The configuration is in the [`mkdocs.yml`](https://github.com/spreadsheetimporter/ui5-cc-spreadsheetimporter/blob/main/mkdocs.yml) file.  
-The pages and images are stored in the [`docs`](https://github.com/spreadsheetimporter/ui5-cc-spreadsheetimporter/tree/main/docs) folder.
-
-### Local Setup
-
-To run the docs locally, you can use Docker.  
-To build the Docker image, run:
-
-```sh
-docker build . -t mkdocs
-```
-
-To run the container:
-
-```sh
-docker run --rm -it -p 8000:8000 -v ${PWD}:/docs squidfunk/mkdocs-material
-```
-
-or
-
-```sh
-npm run runDocs
-```
-
-and then open http://localhost:8000.
-
-### Prod Build
-
-The Documentation is hosted on GitHub Pages and is rebuilt on every push to the `main` branch using the GitHub Action [`pushDocs.yml`](https://github.com/spreadsheetimporter/ui5-cc-spreadsheetimporter/blob/main/.github/workflows/pushDocs.yml) and forcefully pushed to the `gh-deploy` branch.  
-The current URL is: https://docs.spreadsheet-importer.com/
+The [deployment workflow](https://github.com/spreadsheetimporter/docs/blob/main/.github/workflows/deploy.yml) builds the site on pushes to `main` and publishes it from `gh-pages`.

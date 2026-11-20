@@ -1,11 +1,7 @@
-<!-- prettier-ignore-start -->
+# Update existing records
 
-!!! warning
-    This feature is available since version 1.7.0 and currently experimental and may not work as expected.  
-    Also only available for OData V4.  
-    Please provide feedback: https://github.com/spreadsheetimporter/ui5-cc-spreadsheetimporter/issues
-
-<!-- prettier-ignore-end -->
+!!! note "Availability"
+    UPDATE is experimental. It became available for OData V4 in 1.7.0. Version 2.5.0 adds OData V2, including draft-enabled entities.
 
 ## Usage
 
@@ -51,11 +47,14 @@ By default, only the changed properties are updated (partial update). You can ch
 ## How it works
 
 When you upload the file to the App, it will do the usual checks if the columns are in the data model and the data is valid (see [Checks](./Checks.md)).  
-When the user presses the upload button, it will fetch all the data in the batch. To make sure all the data is fetched, it will fetch the data for active and draft separately. So for every batch a ListBinding is created and two requests are made with filters for the keys and for `IsActiveEntity = true` and `IsActiveEntity = false`. This is needed because of the separation of active and draft (see [why requests fail in CAP with OData draft enabled](https://cap.cloud.sap/docs/get-started/troubleshooting#why-do-some-requests-fail-if-i-set-odata-draft-enabled-on-my-entity)).
+The importer reads the matching backend records by key before it writes changes. For draft-enabled entities it checks active and draft records separately. It uses these results to report missing rows, select the correct draft and skip unchanged values in a partial update.
 
-This data is used to determine if the object is in draft or active mode, if the object exists at all, and for partial updates whether a field is changed.
+OData V4 uses a context binding for each change. OData V2 builds the entity path from its metadata keys and sends updates through a dedicated request group. For a working Fiori Elements V2 example, see the [Object Page controller](https://github.com/spreadsheetimporter/ui5-cc-spreadsheetimporter/blob/ui5-cc-spreadsheetimporter-v2.5.0/examples/packages/ordersv2fe/webapp/ext/controller/ObjectPageExt.controller.js).
 
-For every change, an `ODataContextBinding` is created and the data is updated.
+<!-- prettier-ignore-start -->
+!!! note "Draft-enabled entities on OData V2: edit mode required"
+    A draft-enabled entity can only be changed through its draft. If a row matches an **active** record that has **no draft in progress** (the object is in display mode), the importer cannot modify it directly — it reports an *"Edit mode required"* message for that row and skips it. Open the object in edit mode first (which creates the draft), then download, edit and upload the data from that edit-mode state. You can also bind a custom action's `enabled` to the edit state (e.g. `"enabled": "{ui>/isEditable}"`) to disable Mass Update outside edit mode — see [Getting Started](./GettingStarted.md).
+<!-- prettier-ignore-end -->
 
 ### Setting Values to NULL or Empty String
 
@@ -74,8 +73,8 @@ When updating data, you may need to explicitly clear a field or set it to an emp
 | ID  | Name         | Email     | Phone    | Notes     |
 | --- | ------------ | --------- | -------- | --------- |
 | 123 |              |           | 555-1234 |           |
-| 456 | John Updated | **NULL**  |          | **EMPTY** |
-| 789 |              | **EMPTY** |          | Follow up |
+| 456 | John Updated | `__NULL__`  |          | `__EMPTY__` |
+| 789 |              | `__EMPTY__` |          | Follow up |
 
 - Record 123: Only phone is updated, all other fields unchanged
 - Record 456: Name updated, email set to NULL, notes set to empty string "", phone unchanged

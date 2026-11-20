@@ -1,46 +1,21 @@
-# Spreadsheet Importer — Documentation
+# Spreadsheet Importer documentation
 
-Combined documentation for the **Spreadsheet Importer** family:
+This repository publishes the [Spreadsheet Importer documentation](https://docs.spreadsheet-importer.com/).
 
-- the **[UI5 Spreadsheet Importer](https://github.com/spreadsheetimporter/ui5-cc-spreadsheetimporter)** —
-  the frontend UI5 custom control, and
-- the **server-side ABAP RAP Spreadsheet Importer** — the backend component.
+- The [UI5 guide](https://docs.spreadsheet-importer.com/ui5/pages/GettingStarted/) covers version 2.5.0 of the [UI5 Spreadsheet Importer](https://github.com/spreadsheetimporter/ui5-cc-spreadsheetimporter), including installation, configuration and the OData V2 and V4 examples. The Community Edition uses the Apache License 2.0.
+- The [ABAP guide](https://docs.spreadsheet-importer.com/abap/) covers the separate server-side RAP importer.
 
-Built with [MkDocs](https://www.mkdocs.org/) + [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/),
-the same stack as the existing UI5 docs at [docs.spreadsheet-importer.com](https://docs.spreadsheet-importer.com/).
+## Build locally
 
-## Structure
+From the root of this repository, use Python 3.11 or later.
 
-```
-docs/
-├── index.md            # combined landing — the two-part ecosystem + "which one do I need?"
-├── ui5/                # UI5 frontend component
-│   └── index.md        # overview + map to the live UI5 docs (full integration in progress)
-└── abap/               # ABAP backend importer
-    ├── index.md            # overview, requirements, install, quick start
-    ├── integration-guide.md
-    ├── public-api-contract.md
-    └── usage-cookbook.md
+```sh
+python3 -m venv .venv
+. .venv/bin/activate
+python -m pip install -r requirements.txt
+mkdocs serve
 ```
 
-## Status
+Open <http://127.0.0.1:8000/> to preview changes. Edit UI5 pages in `docs/ui5/pages/`, ABAP pages in `docs/abap/` and navigation in `mkdocs.yml`.
 
-- **ABAP backend docs** — added (overview, integration guide, public API contract, usage cookbook),
-  sanitized for a public site (no links into private/maintainer sources).
-- **UI5 frontend docs** — a placeholder + map to the live site for now; full incorporation
-  (snapshot vs. multi-repo build) is a follow-up.
-- **Deploy** — not wired yet. CI runs `mkdocs build --strict` on every push/PR; publishing to a domain
-  is a follow-up once the domain (vs. the live UI5 docs domain) is decided.
-
-## Local development
-
-```bash
-pip install -r requirements.txt
-mkdocs serve            # http://localhost:8000
-
-# or, matching the UI5 repo's Docker workflow:
-docker run --rm -it -p 8000:8000 -v ${PWD}:/docs squidfunk/mkdocs-material
-```
-
-`mkdocs build --strict` must pass (CI enforces it) — it fails on broken internal links and pages
-missing from the nav.
+Run `mkdocs build --strict` to reproduce the pull request check. Merging to `main` builds the site and publishes it through GitHub Pages.
